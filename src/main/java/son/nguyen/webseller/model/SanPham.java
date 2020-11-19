@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 public class SanPham implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long maSanPham;
+    private long id;
     @Column
     private String hinhAnh;
     @Column
@@ -19,11 +19,21 @@ public class SanPham implements Serializable {
     @Column
     private BigDecimal gia;
     @Column
+    private String loai;
+    @Column
     private String mota;
     @OneToOne(mappedBy = "sanPham",cascade = CascadeType.ALL)
     private HoaDonChiTiet hoaDonCHiTiet;
     @Column
     private double hsDiscount=1;
+
+    public String getLoai() {
+        return loai;
+    }
+
+    public void setLoai(String loai) {
+        this.loai = loai;
+    }
 
     public double getHsDiscount() {
         return hsDiscount;
@@ -33,12 +43,12 @@ public class SanPham implements Serializable {
         this.hsDiscount = hsDiscount;
     }
 
-    public long getMaSanPham() {
-        return maSanPham;
+    public long getId() {
+        return id;
     }
 
-    public void setMaSanPham(long maSanPham) {
-        this.maSanPham = maSanPham;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getHinhAnh() {

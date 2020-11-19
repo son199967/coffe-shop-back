@@ -23,6 +23,8 @@ public class HoaDon implements Serializable {
     @JoinColumn(name = "khachHang_id")
     private KhachHang khachHang;
     @Column
+    private int soNguoi;
+    @Column
     private Date time;
     @Column
     private BigDecimal tongTien;
@@ -37,6 +39,14 @@ public class HoaDon implements Serializable {
 
     public long getId() {
         return id;
+    }
+
+    public int getSoNguoi() {
+        return soNguoi;
+    }
+
+    public void setSoNguoi(int soNguoi) {
+        this.soNguoi = soNguoi;
     }
 
     public void setId(long id) {

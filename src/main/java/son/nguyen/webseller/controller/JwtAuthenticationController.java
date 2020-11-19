@@ -36,7 +36,7 @@ public class JwtAuthenticationController {
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getEmail());
        UserDto user = userDetailsService.getUserByEmail(authenticationRequest.getEmail());
         if (user.getRole().equals(USER.ROLE_START.name())){
-            return ResponseEntity.ok("WAIT ADMIN ACCEPS");
+            return ResponseEntity.ok("USER_START");
         }
 
         final String token = jwtTokenUtil.generateToken(userDetails);

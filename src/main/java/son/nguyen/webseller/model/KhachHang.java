@@ -13,7 +13,7 @@ public class KhachHang implements Serializable {
     @Column
     private String tenKh;
     @Column
-    private String e;
+    private String email;
     @Column
     private String sdt;
     @Column
@@ -37,12 +37,12 @@ public class KhachHang implements Serializable {
         this.tenKh = tenKh;
     }
 
-    public String getE() {
-        return e;
+    public String getEmail() {
+        return email;
     }
 
-    public void setE(String e) {
-        this.e = e;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getSdt() {

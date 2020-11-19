@@ -17,7 +17,7 @@ public class HoaDonController {
 
     @RequestMapping(value = "/addHoaDon", method = RequestMethod.GET)
     public ResponseEntity<?> addHoaDon(@RequestHeader String Authorization, @RequestBody HoaDon hoaDon, @RequestParam String phoneCustomer){
-        
+        return  null;
     }
 
 }
