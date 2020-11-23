@@ -1,6 +1,8 @@
 package son.nguyen.webseller.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
@@ -10,6 +12,11 @@ import java.util.List;
 
 @Entity
 @Table(name = "user")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id",
+        resolver = EntityIdResolver.class,
+        scope=User.class)
 public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,8 +49,8 @@ public class User implements Serializable {
     private BigDecimal indexSalarys;
     @ManyToMany(mappedBy = "user")
     private List<CaLamViec> caLamViec;
-    @OneToOne(mappedBy = "user",cascade = CascadeType.ALL)
-    private HoaDon hoaDonBanHang;
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    private List<HoaDon> hoaDonBanHang;
 
     public BigDecimal getIndexSalarys() {
         return indexSalarys;

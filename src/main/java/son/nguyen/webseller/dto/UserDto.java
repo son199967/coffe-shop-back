@@ -3,6 +3,7 @@ package son.nguyen.webseller.dto;
 import org.springframework.lang.NonNull;
 
 public class UserDto {
+    private Long id;
     private String username;
     @NonNull
     private String password;
@@ -17,6 +18,13 @@ public class UserDto {
     private String phone;
     private String role;
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getRole() {
         return role;

@@ -1,13 +1,20 @@
 package son.nguyen.webseller.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Table(name = "sanPham")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id",
+        resolver = EntityIdResolver.class,
+        scope=SanPham.class)
 public class SanPham implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,8 +29,8 @@ public class SanPham implements Serializable {
     private String loai;
     @Column
     private String mota;
-    @OneToOne(mappedBy = "sanPham",cascade = CascadeType.ALL)
-    private HoaDonChiTiet hoaDonCHiTiet;
+    @OneToMany(mappedBy = "sanPham",cascade = CascadeType.ALL)
+    private List<HoaDonChiTiet> hoaDonCHiTiet;
     @Column
     private double hsDiscount=1;
 
@@ -83,12 +90,14 @@ public class SanPham implements Serializable {
         this.mota = mota;
     }
 
-    @JsonBackReference
-    public HoaDonChiTiet getHoaDonCHiTiet() {
+
+    public List<HoaDonChiTiet> getHoaDonCHiTiet() {
         return hoaDonCHiTiet;
     }
 
-    public void setHoaDonCHiTiet(HoaDonChiTiet hoaDonCHiTiet) {
+    public void setHoaDonCHiTiet(List<HoaDonChiTiet> hoaDonCHiTiet) {
         this.hoaDonCHiTiet = hoaDonCHiTiet;
     }
+
+
 }

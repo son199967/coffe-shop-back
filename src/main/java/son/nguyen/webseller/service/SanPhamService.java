@@ -10,5 +10,6 @@ public interface SanPhamService {
     SanPham getSanPhamById(Long id);
     List<SanPham> getSanPhamByLoai(String loai);
     List<String> getAllLoaiSanPham();
+    List<SanPham> getAllSanPham();
 
 }

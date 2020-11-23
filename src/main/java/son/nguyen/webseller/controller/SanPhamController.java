@@ -12,14 +12,24 @@ import son.nguyen.webseller.service.SanPhamService;
 import java.util.List;
 
 @RestController
+@RequestMapping("/sanpham")
 public class SanPhamController {
-    @Autowired
+
     private SanPhamService sanPhamService;
-    @Autowired
+
     private JwtTokenUtil jwtTokenUtil;
-    @Autowired
+
     private JwtUserDetailsService userDetailsService;
-    @PostMapping("/creatNewSanPham")
+
+    @Autowired
+    public SanPhamController(SanPhamService sanPhamService, JwtTokenUtil jwtTokenUtil, JwtUserDetailsService userDetailsService) {
+        this.sanPhamService = sanPhamService;
+        this.jwtTokenUtil = jwtTokenUtil;
+        this.userDetailsService = userDetailsService;
+
+    }
+
+    @PostMapping("/createNewSanPham")
     private ResponseEntity<?> addSanPham(@RequestHeader String Authorization, @RequestBody SanPham sanPham){
         String email = jwtTokenUtil.getUsernameFromToken(Authorization);
         UserDto userDto =userDetailsService.getUserByEmail(email);
@@ -47,13 +57,28 @@ public class SanPhamController {
         return ResponseEntity.ok(sanPhams);
 
     }
+    @GetMapping("/getSanPhamById")
+    private ResponseEntity<?> getSanPhamLoai(@RequestParam Long id){
+        SanPham sanPham =sanPhamService.getSanPhamById(id);
+        return ResponseEntity.ok(sanPham);
+
+    }
     @GetMapping("/getAllLoai")
     private ResponseEntity<?> getSanPhamLoai(){
         List<String> sanPhams= sanPhamService.getAllLoaiSanPham();
+        return ResponseEntity.ok(sanPhams);
+    }
+    @GetMapping("/getAllSanPham")
+    private ResponseEntity<?> getAllSanPham(){
+        List<SanPham> sanPhams= sanPhamService.getAllSanPham();
         return ResponseEntity.ok(sanPhams);
     }
     @DeleteMapping("/deteleSanPham")
     private ResponseEntity<?> deleteSanPham(){
         return null;
     }
+
+
+
+
 }

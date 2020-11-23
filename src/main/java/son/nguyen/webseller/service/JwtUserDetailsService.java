@@ -61,8 +61,9 @@ public class JwtUserDetailsService implements UserDetailsService {
         userRepository.save(userDao);
         return userDao;
     }
-    private UserDto convertDaoToDto(User userDao){
+    public UserDto convertDaoToDto(User userDao){
         UserDto newUser=new UserDto();
+        newUser.setId(userDao.getId());
         newUser.setEmail(userDao.getEmail());
         newUser.setAddress(userDao.getAddress());
         newUser.setFistName(userDao.getFistName());
@@ -76,8 +77,9 @@ public class JwtUserDetailsService implements UserDetailsService {
         return newUser;
 
     }
-    private User convertDtoToDao(UserDto userDto){
+    public User convertDtoToDao(UserDto userDto){
         User newUser=new User();
+        newUser.setId(userDto.getId());
         newUser.setEmail(userDto.getEmail());
         newUser.setAddress(userDto.getAddress());
         newUser.setFistName(userDto.getFistName());

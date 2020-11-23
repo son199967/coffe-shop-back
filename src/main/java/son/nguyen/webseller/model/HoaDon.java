@@ -1,14 +1,22 @@
 package son.nguyen.webseller.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "hoaDon")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id",
+        resolver = EntityIdResolver.class,
+        scope=HoaDon.class)
 public class HoaDon implements Serializable {
 
 
@@ -16,10 +24,10 @@ public class HoaDon implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "khachHang_id")
     private KhachHang khachHang;
     @Column
@@ -34,8 +42,8 @@ public class HoaDon implements Serializable {
     private BigDecimal chiPhiKhac;
     @Column
     private int status;
-//    @OneToMany(mappedBy = "hoadonbanhang",cascade = CascadeType.ALL)
-//    private List<HoaDonChiTiet> hoaDonChiTiet;
+    @OneToMany(mappedBy = "hoaDon",cascade = CascadeType.ALL)
+    private List<HoaDonChiTiet> hoaDonChiTiet;
 
     public long getId() {
         return id;
@@ -53,6 +61,7 @@ public class HoaDon implements Serializable {
         this.id = id;
     }
 
+    @JsonBackReference(value = "user")
     public User getUser() {
         return user;
     }
@@ -61,7 +70,7 @@ public class HoaDon implements Serializable {
         this.user = user;
     }
 
-    @JsonBackReference
+    @JsonBackReference(value = "khachHang")
     public KhachHang getKhachHang() {
         return khachHang;
     }
@@ -78,15 +87,6 @@ public class HoaDon implements Serializable {
     public void setTongTien(BigDecimal tongTien) {
         this.tongTien = tongTien;
     }
-    //
-//    public void setTongTien(BigDecimal tongTien) {
-//        BigDecimal tong = new BigDecimal(0);
-//        hoaDonCHiTiet.forEach(hoaDonCHiTiet1 -> {
-//            tong.add(hoaDonCHiTiet1.getSanPham().getGia().multiply(new BigDecimal(hoaDonCHiTiet1.getSoLuong())).multiply(new BigDecimal(hoaDonCHiTiet1.getSanPham().getHsDiscount())));
-//        });
-//        this.tongTien = tong;
-//
-//    }
 
     public int getGiamGia() {
         return giamGia;
@@ -112,14 +112,13 @@ public class HoaDon implements Serializable {
         this.status = status;
     }
 
-//    @JsonManagedReference
-//    public List<HoaDonChiTiet> getHoaDonChiTiet() {
-//        return hoaDonChiTiet;
-//    }
-//
-//    public void setHoaDonChiTiet(List<HoaDonChiTiet> hoaDonCHiTiet) {
-//        this.hoaDonChiTiet = hoaDonCHiTiet;
-//    }
+    public List<HoaDonChiTiet> getHoaDonChiTiet() {
+        return hoaDonChiTiet;
+    }
+
+    public void setHoaDonChiTiet(List<HoaDonChiTiet> hoaDonCHiTiet) {
+        this.hoaDonChiTiet = hoaDonCHiTiet;
+    }
 
     public Date getTime() {
         return time;
@@ -128,4 +127,6 @@ public class HoaDon implements Serializable {
     public void setTime(Date time) {
         this.time = time;
     }
+
+
 }

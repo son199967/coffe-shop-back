@@ -54,4 +54,10 @@ public class SanPhamServiceImpl implements SanPhamService {
         List<String> strings =sanPhamRepository.findAllLoaiSanPham();
         return strings;
     }
+
+    @Override
+    public List<SanPham> getAllSanPham() {
+        List<SanPham> sanPhams =sanPhamRepository.findAll();
+        return sanPhams;
+    }
 }

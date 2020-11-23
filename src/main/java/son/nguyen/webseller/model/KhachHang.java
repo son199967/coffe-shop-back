@@ -1,11 +1,19 @@
 package son.nguyen.webseller.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
+
 @Entity
 @Table(name = "khachHang")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id",
+        resolver = EntityIdResolver.class,
+        scope=KhachHang.class)
 public class KhachHang implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,8 +26,8 @@ public class KhachHang implements Serializable {
     private String sdt;
     @Column
     private int diemTL;
-    @OneToOne(mappedBy = "khachHang" ,cascade = CascadeType.ALL)
-    private HoaDon hoaDon;
+    @OneToMany(mappedBy = "khachHang" ,cascade = CascadeType.ALL)
+    private List<HoaDon> hoaDon;
 
     public long getId() {
         return id;
@@ -60,12 +68,12 @@ public class KhachHang implements Serializable {
     public void setDiemTL(int diemTL) {
         this.diemTL = diemTL;
     }
-    @JsonManagedReference
-    public HoaDon getHoaDon() {
+
+    public List<HoaDon> getHoaDon() {
         return hoaDon;
     }
 
-    public void setHoaDon(HoaDon hoaDonBanHang) {
-        this.hoaDon = hoaDonBanHang;
+    public void setHoaDon(List<HoaDon> hoaDon) {
+        this.hoaDon = hoaDon;
     }
 }
