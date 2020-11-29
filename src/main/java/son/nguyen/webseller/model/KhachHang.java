@@ -1,6 +1,7 @@
 package son.nguyen.webseller.model;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
@@ -9,11 +10,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "khachHang")
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id",
-        resolver = EntityIdResolver.class,
-        scope=KhachHang.class)
+@JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class KhachHang implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,6 +24,7 @@ public class KhachHang implements Serializable {
     @Column
     private int diemTL;
     @OneToMany(mappedBy = "khachHang" ,cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<HoaDon> hoaDon;
 
     public long getId() {

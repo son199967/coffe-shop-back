@@ -78,6 +78,17 @@ public class HoaDonController {
         khachHangService.addKhachHang(khachHang);
         return ResponseEntity.ok(khachHang);
     }
+    @DeleteMapping("/deleteSpInHdct")
+    private ResponseEntity<?> deleteSanPham(@RequestHeader String Authorization,@RequestParam long idCt ,@RequestParam long idHd){
+        String email = jwtTokenUtil.getUsernameFromToken(Authorization);
+        UserDto userDto =userDetailsService.getUserByEmail(email);
+        if (userDto.getRole().equals("ROLE_START")){
+            return ResponseEntity.ok("not author");
+        }
+       HoaDon hoaDon = hoaDonService.deleteHdctInHd(idHd,idCt);
+        return ResponseEntity.ok(hoaDon);
+
+    }
     @GetMapping("/findKhachHang")
     private ResponseEntity<?> findKhachHangBySdt(@RequestParam String sdt){
      KhachHang khachHang = khachHangService.findBySdt(sdt);
@@ -96,6 +107,7 @@ public class HoaDonController {
         HoaDon hoaDon=hoaDonService.findHoaDonById(id);
         return  ResponseEntity.ok(hoaDon);
     }
+
 
 
 }

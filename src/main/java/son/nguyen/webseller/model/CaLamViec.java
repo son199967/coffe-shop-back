@@ -1,9 +1,8 @@
 package son.nguyen.webseller.model;
 
-import org.apache.commons.net.ntp.TimeStamp;
-
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -16,9 +15,9 @@ public class CaLamViec implements Serializable {
     @Column
     private String tenClV;
     @Column
-    private TimeStamp gioBatDau;
+    private String gioBatDau;
     @Column
-    private TimeStamp gioKetThuc;
+    private String gioKetThuc;
     @Column
     private Date ngay;
     @ManyToMany()
@@ -26,6 +25,27 @@ public class CaLamViec implements Serializable {
             joinColumns = @JoinColumn(name = "caLamViec_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<User> user;
+    public void setCa1(){
+        this.setTenClV("1");
+        this.setGioBatDau("7h30");
+        this.setGioKetThuc("12h00");
+    }
+    public void setCa2(){
+        this.setTenClV("2");
+        this.setGioBatDau("12h00");
+        this.setGioKetThuc("17h30");
+    }
+    public void setCa3(){
+        this.setTenClV("3");
+        this.setGioBatDau("17h30");
+        this.setGioKetThuc("23h00");
+    }
+
+    public static void main(String[] args) {
+        Calendar c = Calendar.getInstance();
+        int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
+        System.out.println(dayOfWeek);
+    }
 
 
     public long getId() {
@@ -36,28 +56,29 @@ public class CaLamViec implements Serializable {
         this.id = id;
     }
 
+
     public String getTenClV() {
         return tenClV;
     }
 
-    public void setTenClV(String tenClV) {
+    private void setTenClV(String tenClV) {
         this.tenClV = tenClV;
     }
 
 
-    public TimeStamp getGioBatDau() {
+    public String getGioBatDau() {
         return gioBatDau;
     }
 
-    public void setGioBatDau(TimeStamp gioBatDau) {
+    private void setGioBatDau(String gioBatDau) {
         this.gioBatDau = gioBatDau;
     }
 
-    public TimeStamp getGioKetThuc() {
+    public String getGioKetThuc() {
         return gioKetThuc;
     }
 
-    public void setGioKetThuc(TimeStamp gioKetThuc) {
+    private void setGioKetThuc(String gioKetThuc) {
         this.gioKetThuc = gioKetThuc;
     }
 

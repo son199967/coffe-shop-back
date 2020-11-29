@@ -12,6 +12,8 @@ public interface HoaDonService {
   HoaDon findHoaDonById(Long id);
   List<HoaDon> findHoaDonNotFund();
   HoaDon findHoaDonBySdt(String sdt);
+  HoaDon deleteHdctInHd(long idHd,long idhdCt);
+
 
 
 }

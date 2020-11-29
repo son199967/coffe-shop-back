@@ -11,7 +11,6 @@ import son.nguyen.webseller.repository.HoaDonChiTietRepository;
 import son.nguyen.webseller.repository.HoaDonRepository;
 import son.nguyen.webseller.service.HoaDonService;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -29,7 +28,6 @@ public class HoaDonServiceImpl implements HoaDonService {
     }
 
     @Override
-    @Transactional
     public HoaDon addHoaDon(User user,Long id, HoaDonChiTiet hoaDonChiTiet, KhachHang khachHang) {
        hoaDonChiTiet.setSoLuong(1);
         if (id==null||id==0){
@@ -39,7 +37,7 @@ public class HoaDonServiceImpl implements HoaDonService {
             hoaDon.setStatus(HOADON.NOTPAY.ordinal());
             hoaDon.setTime(new Date());
             hoaDonRepository.save(hoaDon);
-            hoaDonChiTiet.setHoaDon(hoaDon);
+            hoaDonChiTiet.setHoaDonId(hoaDon.getId());
             hoaDonChiTietRepository.save(hoaDonChiTiet);
             List<HoaDonChiTiet> hoaDonChiTiets=new ArrayList<>();
             hoaDonChiTiets.add(hoaDonChiTiet);
@@ -50,9 +48,12 @@ public class HoaDonServiceImpl implements HoaDonService {
         HoaDon hoaDon =hoaDonRepository.findById(id).get();
         List<Long> hoaDonChiTiets =hoaDon.getHoaDonChiTiet().stream().map(hoaDonChiTiet1 ->hoaDonChiTiet1.getSanPham().getId() ).collect(Collectors.toList());
         if (hoaDonChiTiets.contains(hoaDonChiTiet.getSanPham().getId())){
+            List<HoaDonChiTiet> hdct=hoaDon.getHoaDonChiTiet().stream().filter(hoaDonChiTiet1 -> hoaDonChiTiet1.getSanPham().getId()==hoaDonChiTiet.getSanPham().getId()).collect(Collectors.toList());
+            hdct.get(0).setSoLuong(hdct.get(0).getSoLuong()+1);
+            hoaDonChiTietRepository.save(hdct.get(0));
             return hoaDon;
         }
-        hoaDonChiTiet.setHoaDon(hoaDon);
+        hoaDonChiTiet.setHoaDonId(hoaDon.getId());
         hoaDonChiTietRepository.save(hoaDonChiTiet);
         hoaDon.getHoaDonChiTiet().add(hoaDonChiTiet);
         hoaDonRepository.save(hoaDon);
@@ -78,5 +79,26 @@ public class HoaDonServiceImpl implements HoaDonService {
     public HoaDon findHoaDonBySdt(String  sdt) {
         HoaDon hoaDon =hoaDonRepository.findHoaDonBySdt(sdt);
         return  hoaDon;
+    }
+
+    @Override
+    public HoaDon deleteHdctInHd(long idHd, long idhdCt) {
+        Optional<HoaDon> hoaDon =hoaDonRepository.findById(idHd);
+        if (!hoaDon.isPresent()) return null;
+        for (HoaDonChiTiet hdct:hoaDon.get().getHoaDonChiTiet()){
+            if (hdct.getId()==idhdCt){
+                if (hdct.getSoLuong()==1){
+                    hoaDonChiTietRepository.deleteById(idhdCt);
+                    break;
+                }else {
+                    hdct.setSoLuong( hdct.getSoLuong()-1);
+                    hoaDonChiTietRepository.save(hdct);
+                    break;
+
+                }
+            }
+        }
+        return hoaDonRepository.findById(idHd).get();
+
     }
 }

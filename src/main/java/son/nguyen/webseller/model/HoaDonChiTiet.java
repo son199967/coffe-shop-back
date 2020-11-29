@@ -1,5 +1,6 @@
 package son.nguyen.webseller.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
@@ -8,20 +9,16 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "hoaDonChiTiet")
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id",
-        resolver = EntityIdResolver.class,
-        scope=HoaDonChiTiet.class)
+@JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class HoaDonChiTiet implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "hoaDon_id")
-    private HoaDon hoaDon;
+    @Column(name = "hoaDonId",nullable = true)
+    @JsonBackReference
+    private Long hoaDonId;
 
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -29,10 +26,10 @@ public class HoaDonChiTiet implements Serializable {
     private SanPham sanPham;
 
 
-    @Column
+    @Column(name = "soLuong",nullable = true)
     private int soLuong;
 
-    @Column
+    @Column(name = "mota",nullable = true)
     private String mota;
 
     public long getId() {
@@ -42,13 +39,14 @@ public class HoaDonChiTiet implements Serializable {
     public void setId(long id) {
         this.id = id;
     }
-    public HoaDon getHoaDon() {
-        return hoaDon;
-    }
-    public void setHoaDon(HoaDon hoaDon) {
-        this.hoaDon = hoaDon;
+
+    public Long getHoaDonId() {
+        return hoaDonId;
     }
 
+    public void setHoaDonId(Long hoaDonId) {
+        this.hoaDonId = hoaDonId;
+    }
 
     public SanPham getSanPham() {
         return sanPham;

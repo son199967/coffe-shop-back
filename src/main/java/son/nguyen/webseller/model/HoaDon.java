@@ -2,6 +2,7 @@ package son.nguyen.webseller.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
@@ -12,11 +13,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "hoaDon")
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id",
-        resolver = EntityIdResolver.class,
-        scope=HoaDon.class)
+@JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class HoaDon implements Serializable {
 
 
@@ -25,9 +22,11 @@ public class HoaDon implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference
     @JoinColumn(name = "user_id")
     private User user;
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference
     @JoinColumn(name = "khachHang_id")
     private KhachHang khachHang;
     @Column
@@ -42,7 +41,9 @@ public class HoaDon implements Serializable {
     private BigDecimal chiPhiKhac;
     @Column
     private int status;
-    @OneToMany(mappedBy = "hoaDon",cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "hoaDonId")
+    @JsonManagedReference
     private List<HoaDonChiTiet> hoaDonChiTiet;
 
     public long getId() {
