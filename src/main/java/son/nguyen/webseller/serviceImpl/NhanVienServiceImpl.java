@@ -12,6 +12,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.TemporalAdjusters;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class NhanVienServiceImpl implements NhanVienService {
@@ -58,6 +59,7 @@ public class NhanVienServiceImpl implements NhanVienService {
             setCalamViecNextWeek();
             caLamViecs = caLamViecRepository.getAllCalamViecNextWeeK(dateStart,dateEnd);
         }
+        Date d =new Date();
         return caLamViecs;
     }
     private void setCalamViecNextWeek(){
@@ -116,9 +118,12 @@ public class NhanVienServiceImpl implements NhanVienService {
             return null;
         }
         List<User> users = caLamViec.get().getNhanVien();
+        List<User> ids =users.stream().filter(user1 -> user1.getId()==user.getId()).collect(Collectors.toList());
         if (users == null || users.isEmpty() || users.size() == 0) {
             users = new ArrayList<>(Arrays.asList(user));
         } else if (users.size()==3){
+            return null;
+        }else if (ids.size()!=0){
             return null;
         }else {
             users.add(user);

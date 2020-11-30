@@ -25,10 +25,10 @@ public class HoaDon implements Serializable {
     @JsonBackReference
     @JoinColumn(name = "user_id")
     private User user;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonBackReference
-    @JoinColumn(name = "khachHang_id")
-    private KhachHang khachHang;
+
+    @Column(name = "khachHangId",nullable = true)
+    private Long khachHangId;
+
     @Column
     private int soNguoi;
     @Column
@@ -71,15 +71,13 @@ public class HoaDon implements Serializable {
         this.user = user;
     }
 
-    @JsonBackReference(value = "khachHang")
-    public KhachHang getKhachHang() {
-        return khachHang;
+    public Long getKhachHangId() {
+        return khachHangId;
     }
 
-    public void setKhachHang(KhachHang khachHang) {
-        this.khachHang = khachHang;
+    public void setKhachHangId(Long khachHangId) {
+        this.khachHangId = khachHangId;
     }
-
 
     public BigDecimal getTongTien() {
         return tongTien;

@@ -1,8 +1,6 @@
 package son.nguyen.webseller.model;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
@@ -12,7 +10,6 @@ import java.util.List;
 
 @Entity
 @Table(name = "user")
-@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,6 +40,7 @@ public class User implements Serializable {
     private String password;
     @Column
     private BigDecimal indexSalarys;
+
     @ManyToMany(mappedBy = "user")
     private List<CaLamViec> caLamViec;
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
@@ -55,14 +53,16 @@ public class User implements Serializable {
     public void setIndexSalarys(BigDecimal indexSalarys) {
         this.indexSalarys = indexSalarys;
     }
-
-    public List<CaLamViec> getCaLamViecList() {
+    @JsonBackReference
+    public List<CaLamViec> getCaLamViec() {
         return caLamViec;
     }
 
-    public void setCaLamViecList(List<CaLamViec> caLamViecList) {
-        this.caLamViec = caLamViecList;
+    public void setCaLamViec(List<CaLamViec> caLamViec) {
+        this.caLamViec = caLamViec;
     }
+
+
 
     public long getId() {
         return id;

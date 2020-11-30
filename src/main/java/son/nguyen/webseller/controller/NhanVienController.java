@@ -30,8 +30,8 @@ public class NhanVienController {
 //        if (userDto.getRole().equals("ROLE_START")){
 //            return ResponseEntity.ok("not author");
 //        }
-        List<CaLamViec> caLamViecList = nhanVienService.nhanVienGetAllCaLamViecTiep();
-        return ResponseEntity.ok(caLamViecList);
+        List<CaLamViec> caLamViec = nhanVienService.nhanVienGetAllCaLamViecTiep();
+        return ResponseEntity.ok(caLamViec);
     }
     @RequestMapping(value = "/getAllCalamNextWeek", method = RequestMethod.GET)
     public ResponseEntity<?> getAllCalamNextWeeK() {
@@ -51,6 +51,9 @@ public class NhanVienController {
             return ResponseEntity.ok("not author");
         }
         CaLamViec caLamViec = nhanVienService.registerCalamViec(user,id);
+        if (caLamViec==null){
+            return ResponseEntity.ok("1");
+        }
         return ResponseEntity.ok(caLamViec);
     }
 

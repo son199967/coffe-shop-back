@@ -11,6 +11,7 @@ import son.nguyen.webseller.repository.HoaDonChiTietRepository;
 import son.nguyen.webseller.repository.HoaDonRepository;
 import son.nguyen.webseller.service.HoaDonService;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -33,7 +34,7 @@ public class HoaDonServiceImpl implements HoaDonService {
         if (id==null||id==0){
             HoaDon hoaDon =new HoaDon();
             hoaDon.setUser(user);
-            hoaDon.setKhachHang(khachHang);
+            hoaDon.setKhachHangId(khachHang.getId());
             hoaDon.setStatus(HOADON.NOTPAY.ordinal());
             hoaDon.setTime(new Date());
             hoaDonRepository.save(hoaDon);
@@ -42,6 +43,7 @@ public class HoaDonServiceImpl implements HoaDonService {
             List<HoaDonChiTiet> hoaDonChiTiets=new ArrayList<>();
             hoaDonChiTiets.add(hoaDonChiTiet);
             hoaDon.setHoaDonChiTiet(hoaDonChiTiets);
+            hoaDon.setTongTien(totalMoney(hoaDon.getHoaDonChiTiet()));
             hoaDonRepository.save(hoaDon);
             return hoaDon;
         }
@@ -51,13 +53,24 @@ public class HoaDonServiceImpl implements HoaDonService {
             List<HoaDonChiTiet> hdct=hoaDon.getHoaDonChiTiet().stream().filter(hoaDonChiTiet1 -> hoaDonChiTiet1.getSanPham().getId()==hoaDonChiTiet.getSanPham().getId()).collect(Collectors.toList());
             hdct.get(0).setSoLuong(hdct.get(0).getSoLuong()+1);
             hoaDonChiTietRepository.save(hdct.get(0));
+            HoaDon saveHd=hoaDonRepository.findById(id).get();
+            saveHd.setTongTien(totalMoney(saveHd.getHoaDonChiTiet()));
+            hoaDonRepository.save(saveHd);
             return hoaDon;
         }
         hoaDonChiTiet.setHoaDonId(hoaDon.getId());
         hoaDonChiTietRepository.save(hoaDonChiTiet);
         hoaDon.getHoaDonChiTiet().add(hoaDonChiTiet);
+        hoaDon.setTongTien(totalMoney(hoaDon.getHoaDonChiTiet()));
         hoaDonRepository.save(hoaDon);
         return hoaDon;
+    }
+    private BigDecimal totalMoney(List<HoaDonChiTiet> hoaDonChiTiets){
+       BigDecimal bd=new BigDecimal(0);
+       for (HoaDonChiTiet hd:hoaDonChiTiets){
+           bd.add(hd.getSanPham().getGia().multiply(new BigDecimal(hd.getSoLuong())));
+       }
+       return bd;
     }
 
     @Override
@@ -98,6 +111,8 @@ public class HoaDonServiceImpl implements HoaDonService {
                 }
             }
         }
+        HoaDon hoaSave= hoaDonRepository.findById(idHd).get();
+        hoaSave.setTongTien(totalMoney(hoaSave.getHoaDonChiTiet()));
         return hoaDonRepository.findById(idHd).get();
 
     }

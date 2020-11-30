@@ -1,12 +1,10 @@
 package son.nguyen.webseller.model;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
 
 @Entity
 @Table(name = "khachHang")
@@ -23,9 +21,6 @@ public class KhachHang implements Serializable {
     private String sdt;
     @Column
     private int diemTL;
-    @OneToMany(mappedBy = "khachHang" ,cascade = CascadeType.ALL)
-    @JsonManagedReference
-    private List<HoaDon> hoaDon;
 
     public long getId() {
         return id;
@@ -65,13 +60,5 @@ public class KhachHang implements Serializable {
 
     public void setDiemTL(int diemTL) {
         this.diemTL = diemTL;
-    }
-
-    public List<HoaDon> getHoaDon() {
-        return hoaDon;
-    }
-
-    public void setHoaDon(List<HoaDon> hoaDon) {
-        this.hoaDon = hoaDon;
     }
 }

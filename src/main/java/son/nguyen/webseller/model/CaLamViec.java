@@ -1,5 +1,7 @@
 package son.nguyen.webseller.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Calendar;
@@ -89,7 +91,7 @@ public class CaLamViec implements Serializable {
     public void setNgay(Date ngay) {
         this.ngay = ngay;
     }
-
+    @JsonManagedReference
     public List<User> getNhanVien() {
         return user;
     }
