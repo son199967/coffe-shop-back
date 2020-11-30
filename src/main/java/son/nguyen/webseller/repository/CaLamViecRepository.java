@@ -14,6 +14,8 @@ public interface CaLamViecRepository extends JpaRepository<CaLamViec,Long> {
     List<CaLamViec> getAllCalamViecInWeek(Date start ,Date end);
     @Query("select clv from CaLamViec  clv where clv.ngay between ?1 and ?2 order by clv.tenClV asc,clv.ngay asc ")
     List<CaLamViec> getAllCalamViecNextWeeK(Date start ,Date end);
+    @Query("select clv from CaLamViec  clv join  clv.user u where u.id=?1 and MONTH(clv.ngay)=?2 and YEAR(clv.ngay)=?3 order by clv.ngay asc")
+    List<CaLamViec> getAllBangLuongUser(Long idUser,Integer mounh,Integer year);
 
 
 }

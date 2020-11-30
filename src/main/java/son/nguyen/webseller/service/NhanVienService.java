@@ -9,5 +9,6 @@ public interface NhanVienService {
     List<CaLamViec> nhanVienGetAllCaLamViecTiep();
     List<CaLamViec> nhanVienGetAllCaLamViecNextWeek();
     CaLamViec registerCalamViec( User user,Long id);
+    List<CaLamViec> getAllBangLuong(User user,Integer month,Integer year);
 
 }

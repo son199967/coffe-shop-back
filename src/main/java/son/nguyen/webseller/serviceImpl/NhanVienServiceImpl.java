@@ -27,21 +27,20 @@ public class NhanVienServiceImpl implements NhanVienService {
     public List<CaLamViec> nhanVienGetAllCaLamViecTiep() {
         ZoneId defaultZoneId = ZoneId.systemDefault();
         LocalDate today = LocalDate.now( defaultZoneId );
-        LocalDate previousMonday = today.with( TemporalAdjusters.previous( DayOfWeek.MONDAY ) );
+        LocalDate previousMonday = today.with( TemporalAdjusters.previousOrSame( DayOfWeek.MONDAY ) );
         Date dateStart =new Date( Date.from(previousMonday.atStartOfDay(defaultZoneId).toInstant()).getTime());
 
-        Date dateEnd =new Date( Date.from(previousMonday.atStartOfDay(defaultZoneId).toInstant()).getTime()+ 1000*60*60*24*7);
+        Date dateEnd =new Date( Date.from(previousMonday.atStartOfDay(defaultZoneId).toInstant()).getTime()+ 1000*60*60*24*6);
         List<CaLamViec> caLamViecs = caLamViecRepository.getAllCalamViecInWeek(dateStart,dateEnd);
         return caLamViecs;
     }
 
+
     public static void main(String[] args) {
         ZoneId defaultZoneId = ZoneId.systemDefault();
         LocalDate today = LocalDate.now( defaultZoneId );
-        LocalDate previousMonday = today.with( TemporalAdjusters.previous( DayOfWeek.MONDAY ) );
-        Date date =new Date( Date.from(previousMonday.atStartOfDay(defaultZoneId).toInstant()).getTime()+ 1000*60*60*24*7);
-
-        System.out.println(date);
+        LocalDate previousMonday = today.with( TemporalAdjusters.previousOrSame( DayOfWeek.MONDAY ) );
+        System.out.println(previousMonday);
 
     }
 
@@ -49,10 +48,10 @@ public class NhanVienServiceImpl implements NhanVienService {
     public List<CaLamViec> nhanVienGetAllCaLamViecNextWeek() {
         ZoneId defaultZoneId = ZoneId.systemDefault();
         LocalDate today = LocalDate.now( defaultZoneId );
-        LocalDate previousMonday = today.with( TemporalAdjusters.previous( DayOfWeek.MONDAY ) );
+        LocalDate previousMonday = today.with( TemporalAdjusters.previousOrSame( DayOfWeek.MONDAY ) );
         Date dateStart =new Date( Date.from(previousMonday.atStartOfDay(defaultZoneId).toInstant()).getTime()+ 1000*60*60*24*7);
 
-        Date dateEnd =new Date( Date.from(previousMonday.atStartOfDay(defaultZoneId).toInstant()).getTime()+ 1000*60*60*24*14);
+        Date dateEnd =new Date( Date.from(previousMonday.atStartOfDay(defaultZoneId).toInstant()).getTime()+ 1000*60*60*24*13);
 
         List<CaLamViec> caLamViecs = caLamViecRepository.getAllCalamViecNextWeeK(dateStart,dateEnd);
         if (caLamViecs==null||caLamViecs.size()==0){
@@ -65,7 +64,7 @@ public class NhanVienServiceImpl implements NhanVienService {
     private void setCalamViecNextWeek(){
         ZoneId defaultZoneId = ZoneId.systemDefault();
         LocalDate today = LocalDate.now( defaultZoneId );
-        LocalDate previousMonday = today.with( TemporalAdjusters.previous( DayOfWeek.MONDAY ) );
+        LocalDate previousMonday = today.with( TemporalAdjusters.previousOrSame( DayOfWeek.MONDAY ) );
 
         Date MONDAY =new Date( Date.from(previousMonday.atStartOfDay(defaultZoneId).toInstant()).getTime()+ 1000*60*60*24*7);
         setCalamViec(MONDAY);
@@ -134,4 +133,9 @@ public class NhanVienServiceImpl implements NhanVienService {
         return caLamViec.get();
     }
 
+    @Override
+    public List<CaLamViec> getAllBangLuong(User user,Integer month,Integer year) {
+     List<CaLamViec> caLamViecs =  caLamViecRepository.getAllBangLuongUser(user.getId(),month,year);
+     return caLamViecs;
+    }
 }

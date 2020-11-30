@@ -43,6 +43,16 @@ public class NhanVienController {
         List<CaLamViec> caLamViecList = nhanVienService.nhanVienGetAllCaLamViecNextWeek();
         return ResponseEntity.ok(caLamViecList);
     }
+    @RequestMapping(value = "/getBangTinhCong", method = RequestMethod.GET)
+    public ResponseEntity<?> getBangLuong(@RequestHeader String Authorization,@RequestParam Integer month,@RequestParam Integer year) {
+        String email = jwtTokenUtil.getUsernameFromToken(Authorization);
+        User user =jwtUserDetailsService.getUseDaorByEmail(email);
+        if (user.getRole().equals("ROLE_START")){
+            return ResponseEntity.ok("not author");
+        }
+        List<CaLamViec> caLamViecList = nhanVienService.getAllBangLuong(user,month,year);
+        return ResponseEntity.ok(caLamViecList);
+    }
     @GetMapping(value = "/register")
     public ResponseEntity<?> registerCaLamViec(@RequestHeader String Authorization, @RequestParam Long id) {
         String email = jwtTokenUtil.getUsernameFromToken(Authorization);
@@ -56,6 +66,7 @@ public class NhanVienController {
         }
         return ResponseEntity.ok(caLamViec);
     }
+
 
 
 }

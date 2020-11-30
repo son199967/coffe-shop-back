@@ -68,10 +68,14 @@ public class HoaDonServiceImpl implements HoaDonService {
     private BigDecimal totalMoney(List<HoaDonChiTiet> hoaDonChiTiets){
        BigDecimal bd=new BigDecimal(0);
        for (HoaDonChiTiet hd:hoaDonChiTiets){
-           bd.add(hd.getSanPham().getGia().multiply(new BigDecimal(hd.getSoLuong())));
+           BigDecimal a=hd.getSanPham().getGia().multiply(new BigDecimal(hd.getSoLuong()));
+           bd= a.add(bd);
+           System.out.println(a);
        }
        return bd;
     }
+
+
 
     @Override
     public HoaDon findHoaDonById(Long id) {
