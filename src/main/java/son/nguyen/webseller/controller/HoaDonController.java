@@ -14,6 +14,7 @@ import son.nguyen.webseller.service.JwtUserDetailsService;
 import son.nguyen.webseller.service.KhachHangService;
 import son.nguyen.webseller.service.SanPhamService;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -39,6 +40,7 @@ public class HoaDonController {
         this.userDetailsService = userDetailsService;
         this.khachHangService = khachHangService;
     }
+
 
     @PostMapping(value = "/addSpHoaDon")
     public ResponseEntity<?> addHoaDon(@RequestHeader String Authorization,@RequestParam(required = false) Long id , @RequestBody HoaDonChiTiet hoaDonChiTiet, @RequestParam(required = true) String phoneCustomer){
@@ -67,6 +69,58 @@ public class HoaDonController {
         HoaDon hoaDon= hoaDonService.findHoaDonBySdt(sdtNear);
         return ResponseEntity.ok(hoaDon);
     }
+    @GetMapping("/getHoaDonDate")
+    private  ResponseEntity<?> getHoaDonDate(@RequestHeader String Authorization,@RequestParam Integer ngay,@RequestParam Integer thang,@RequestParam Integer nam){
+        String email = jwtTokenUtil.getUsernameFromToken(Authorization);
+        UserDto userDto =userDetailsService.getUserByEmail(email);
+        if (userDto.getRole().equals("ROLE_START")){
+            return ResponseEntity.ok("not author");
+        }
+
+        List<HoaDon> hoaDon= hoaDonService.getAllHoaDonByDate(ngay,thang,nam);
+        return ResponseEntity.ok(hoaDon);
+    }
+    @GetMapping("/getHoaDonMonth")
+    private  ResponseEntity<?> getHoaDonMonth(@RequestHeader String Authorization,@RequestParam Integer thang,@RequestParam Integer nam){
+        String email = jwtTokenUtil.getUsernameFromToken(Authorization);
+        UserDto userDto =userDetailsService.getUserByEmail(email);
+        if (userDto.getRole().equals("ROLE_START")){
+            return ResponseEntity.ok("not author");
+        }
+
+        List<HoaDon> hoaDon= hoaDonService.getAllHoaDonByMonth(thang,nam);
+        return ResponseEntity.ok(hoaDon);
+    }
+    @GetMapping("/doanhThuThang")
+    private  ResponseEntity<?> doanhThuThang(@RequestHeader String Authorization,@RequestParam Integer thang,@RequestParam Integer nam){
+        String email = jwtTokenUtil.getUsernameFromToken(Authorization);
+        UserDto userDto =userDetailsService.getUserByEmail(email);
+        if (userDto.getRole().equals("ROLE_START")){
+            return ResponseEntity.ok("not author");
+        }
+
+        List<HoaDon> hoaDon= hoaDonService.getAllHoaDonByMonth(thang,nam);
+        BigDecimal bigDecimal =new BigDecimal(0);
+        for(HoaDon hd:hoaDon){
+            bigDecimal =bigDecimal.add(hd.getTongTien());
+        }
+        return ResponseEntity.ok(bigDecimal);
+    }
+    @GetMapping("/doanhThuNgay")
+    private  ResponseEntity<?> doanhThuNgay(@RequestHeader String Authorization,@RequestParam Integer ngay,@RequestParam Integer thang,@RequestParam Integer nam){
+        String email = jwtTokenUtil.getUsernameFromToken(Authorization);
+        UserDto userDto =userDetailsService.getUserByEmail(email);
+        if (userDto.getRole().equals("ROLE_START")){
+            return ResponseEntity.ok("not author");
+        }
+
+        List<HoaDon> hoaDon= hoaDonService.getAllHoaDonByDate(ngay,thang,nam);
+        BigDecimal bigDecimal =new BigDecimal(0);
+        for(HoaDon hd:hoaDon){
+            bigDecimal =bigDecimal.add(hd.getTongTien());
+        }
+        return ResponseEntity.ok(bigDecimal);
+    }
 
     @PostMapping("/addKhachHang")
     private ResponseEntity<?> addKhachHang(@RequestHeader String Authorization, @RequestBody KhachHang khachHang){
@@ -88,6 +142,11 @@ public class HoaDonController {
        HoaDon hoaDon = hoaDonService.deleteHdctInHd(idHd,idCt);
         return ResponseEntity.ok(hoaDon);
 
+    }
+    @GetMapping("/thanhtoanDon")
+    private ResponseEntity<?> thanhtoanDon(@RequestParam Long id){
+        HoaDon hoaDon =hoaDonService.thanhtoandon(id);
+        return ResponseEntity.ok(hoaDon);
     }
     @GetMapping("/findKhachHang")
     private ResponseEntity<?> findKhachHangBySdt(@RequestParam String sdt){

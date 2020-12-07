@@ -13,6 +13,10 @@ public interface HoaDonService {
   List<HoaDon> findHoaDonNotFund();
   HoaDon findHoaDonBySdt(String sdt);
   HoaDon deleteHdctInHd(long idHd,long idhdCt);
+  HoaDon thanhtoandon(long id);
+  List<HoaDon> getAllHoaDonByDate(Integer ngay,Integer thang ,Integer nam);
+  List<HoaDon> getAllHoaDonByMonth(Integer thang ,Integer nam);
+
 
 
 

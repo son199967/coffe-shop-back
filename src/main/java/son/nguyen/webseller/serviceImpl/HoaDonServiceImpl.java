@@ -120,4 +120,24 @@ public class HoaDonServiceImpl implements HoaDonService {
         return hoaDonRepository.findById(idHd).get();
 
     }
+
+    @Override
+    public HoaDon thanhtoandon(long id) {
+        HoaDon hoaDon=hoaDonRepository.findById(id).get();
+        hoaDon.setStatus(HOADON.PAY.ordinal());
+        hoaDonRepository.save(hoaDon);
+        return hoaDon;
+    }
+
+    @Override
+    public List<HoaDon> getAllHoaDonByDate(Integer ngay,Integer thang,Integer nam) {
+        List<HoaDon> hoaDons =hoaDonRepository.findHoaDonByDate(ngay,thang,nam);
+        return hoaDons;
+    }
+
+    @Override
+    public List<HoaDon> getAllHoaDonByMonth(Integer thang, Integer nam) {
+        List<HoaDon> hoaDons =hoaDonRepository.findHoaDonByMonth(thang,nam);
+        return hoaDons;
+    }
 }

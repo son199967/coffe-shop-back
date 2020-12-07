@@ -79,7 +79,9 @@ public class JwtUserDetailsService implements UserDetailsService {
     }
     public User convertDtoToDao(UserDto userDto){
         User newUser=new User();
-        newUser.setId(userDto.getId());
+        if (userDto.getId()!=null) {
+            newUser.setId(userDto.getId());
+        }
         newUser.setEmail(userDto.getEmail());
         newUser.setAddress(userDto.getAddress());
         newUser.setFistName(userDto.getFistName());

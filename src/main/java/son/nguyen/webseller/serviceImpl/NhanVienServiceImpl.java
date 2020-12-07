@@ -67,42 +67,46 @@ public class NhanVienServiceImpl implements NhanVienService {
         LocalDate previousMonday = today.with( TemporalAdjusters.previousOrSame( DayOfWeek.MONDAY ) );
 
         Date MONDAY =new Date( Date.from(previousMonday.atStartOfDay(defaultZoneId).toInstant()).getTime()+ 1000*60*60*24*7);
-        setCalamViec(MONDAY);
+        setCalamViec(MONDAY,1);
 
         Date TUESDAY =new Date( Date.from(previousMonday.atStartOfDay(defaultZoneId).toInstant()).getTime()+ 1000*60*60*24*8);
-        setCalamViec(TUESDAY);
+        setCalamViec(TUESDAY,1);
 
 
         Date WEDNESDAY =new Date( Date.from(previousMonday.atStartOfDay(defaultZoneId).toInstant()).getTime()+ 1000*60*60*24*9);
-        setCalamViec(WEDNESDAY);
+        setCalamViec(WEDNESDAY,1);
 
         Date THURSDAY =new Date( Date.from(previousMonday.atStartOfDay(defaultZoneId).toInstant()).getTime()+ 1000*60*60*24*10);
-        setCalamViec(THURSDAY);
+        setCalamViec(THURSDAY,1);
 
 
         Date FRIDAY =new Date( Date.from(previousMonday.atStartOfDay(defaultZoneId).toInstant()).getTime()+ 1000*60*60*24*11);
-        setCalamViec(FRIDAY);
+        setCalamViec(FRIDAY,1);
 
 
         Date SATURDAY =new Date( Date.from(previousMonday.atStartOfDay(defaultZoneId).toInstant()).getTime()+ 1000*60*60*24*12);
-        setCalamViec(SATURDAY);
+        setCalamViec(SATURDAY,1.5);
 
 
         Date SUNDAY =new Date( Date.from(previousMonday.atStartOfDay(defaultZoneId).toInstant()).getTime()+ 1000*60*60*24*13);
-        setCalamViec(SUNDAY);
+        setCalamViec(SUNDAY,1.5);
 
     }
-    private void setCalamViec(Date date){
+    private void setCalamViec(Date date,double hs){
+
         CaLamViec ca1 =new CaLamViec();
         ca1.setCa1();
         ca1.setNgay(date);
+        ca1.setHs(hs);
         caLamViecRepository.save(ca1);
         CaLamViec ca2 =new CaLamViec();
         ca2.setCa2();
+        ca2.setHs(hs);
         ca2.setNgay(date);
         caLamViecRepository.save(ca2);
         CaLamViec ca3 =new CaLamViec();
         ca3.setCa3();
+        ca3.setHs(hs);
         ca3.setNgay(date);
         caLamViecRepository.save(ca3);
 

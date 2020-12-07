@@ -2,6 +2,7 @@ package son.nguyen.webseller.serviceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import son.nguyen.webseller.model.HoaDon;
 import son.nguyen.webseller.model.KhachHang;
 import son.nguyen.webseller.repository.KhachHangRepository;
 import son.nguyen.webseller.service.KhachHangService;
@@ -32,4 +33,6 @@ public class KhachHangServiceImpl implements KhachHangService {
         List<String> strings =khachHangRepository.findSdtNear(sdt);
         return strings;
     }
+
+
 }

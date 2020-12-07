@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -22,6 +21,8 @@ public class CaLamViec implements Serializable {
     private String gioKetThuc;
     @Column
     private Date ngay;
+    @Column
+    private double hs;
     @ManyToMany()
     @JoinTable(name = "caLamViec_nhanVien",
             joinColumns = @JoinColumn(name = "caLamViec_id"),
@@ -43,12 +44,13 @@ public class CaLamViec implements Serializable {
         this.setGioKetThuc("23h00");
     }
 
-    public static void main(String[] args) {
-        Calendar c = Calendar.getInstance();
-        int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
-        System.out.println(dayOfWeek);
+    public double getHs() {
+        return hs;
     }
 
+    public void setHs(double hs) {
+        this.hs = hs;
+    }
 
     public long getId() {
         return id;
