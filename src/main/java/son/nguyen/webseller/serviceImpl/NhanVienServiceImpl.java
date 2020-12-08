@@ -32,17 +32,14 @@ public class NhanVienServiceImpl implements NhanVienService {
 
         Date dateEnd =new Date( Date.from(previousMonday.atStartOfDay(defaultZoneId).toInstant()).getTime()+ 1000*60*60*24*6);
         List<CaLamViec> caLamViecs = caLamViecRepository.getAllCalamViecInWeek(dateStart,dateEnd);
+        if (caLamViecs==null||caLamViecs.size()==0){
+            setCalamViecINWeek();
+            caLamViecs = caLamViecRepository.getAllCalamViecInWeek(dateStart,dateEnd);
+        }
         return caLamViecs;
     }
 
 
-    public static void main(String[] args) {
-        ZoneId defaultZoneId = ZoneId.systemDefault();
-        LocalDate today = LocalDate.now( defaultZoneId );
-        LocalDate previousMonday = today.with( TemporalAdjusters.previousOrSame( DayOfWeek.MONDAY ) );
-        System.out.println(previousMonday);
-
-    }
 
     @Override
     public List<CaLamViec> nhanVienGetAllCaLamViecNextWeek() {
@@ -60,6 +57,37 @@ public class NhanVienServiceImpl implements NhanVienService {
         }
         Date d =new Date();
         return caLamViecs;
+    }
+    private void setCalamViecINWeek(){
+        ZoneId defaultZoneId = ZoneId.systemDefault();
+        LocalDate today = LocalDate.now( defaultZoneId );
+        LocalDate previousMonday = today.with( TemporalAdjusters.previousOrSame( DayOfWeek.MONDAY ) );
+
+        Date MONDAY =new Date( Date.from(previousMonday.atStartOfDay(defaultZoneId).toInstant()).getTime());
+        setCalamViec(MONDAY,1);
+
+        Date TUESDAY =new Date( Date.from(previousMonday.atStartOfDay(defaultZoneId).toInstant()).getTime()+ 1000*60*60*24);
+        setCalamViec(TUESDAY,1);
+
+
+        Date WEDNESDAY =new Date( Date.from(previousMonday.atStartOfDay(defaultZoneId).toInstant()).getTime()+ 1000*60*60*24*2);
+        setCalamViec(WEDNESDAY,1);
+
+        Date THURSDAY =new Date( Date.from(previousMonday.atStartOfDay(defaultZoneId).toInstant()).getTime()+ 1000*60*60*24*3);
+        setCalamViec(THURSDAY,1);
+
+
+        Date FRIDAY =new Date( Date.from(previousMonday.atStartOfDay(defaultZoneId).toInstant()).getTime()+ 1000*60*60*24*4);
+        setCalamViec(FRIDAY,1);
+
+
+        Date SATURDAY =new Date( Date.from(previousMonday.atStartOfDay(defaultZoneId).toInstant()).getTime()+ 1000*60*60*24*5);
+        setCalamViec(SATURDAY,1.5);
+
+
+        Date SUNDAY =new Date( Date.from(previousMonday.atStartOfDay(defaultZoneId).toInstant()).getTime()+ 1000*60*60*24*6);
+        setCalamViec(SUNDAY,1.5);
+
     }
     private void setCalamViecNextWeek(){
         ZoneId defaultZoneId = ZoneId.systemDefault();
