@@ -1,15 +1,12 @@
 package son.nguyen.webseller.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
 @Table(name = "hoaDonChiTiet")
-@JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class HoaDonChiTiet implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,6 +19,7 @@ public class HoaDonChiTiet implements Serializable {
 
 
     @ManyToOne(fetch = FetchType.LAZY)
+
     @JoinColumn(name = "sanPham_id")
     private SanPham sanPham;
 
@@ -47,7 +45,6 @@ public class HoaDonChiTiet implements Serializable {
     public void setHoaDonId(Long hoaDonId) {
         this.hoaDonId = hoaDonId;
     }
-
     public SanPham getSanPham() {
         return sanPham;
     }
