@@ -21,7 +21,7 @@ public class FileController {
     @PostMapping(value = "/upload", consumes = {"multipart/form-data"})
     public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile multipartFile) throws IOException {
         logger.info(String.format("File name '%s' uploaded successfully.", multipartFile.getOriginalFilename()));
-        String destination = "/Users/sonnguyen/Desktop/code/web-coffee-font/public/img/" + multipartFile.getOriginalFilename();
+        String destination = "C:/Users/NguyentTuu/Desktop/web/coffe-shop-font/public/img/" + multipartFile.getOriginalFilename();
         File file = new File(destination);
         multipartFile.transferTo(file);
         return ResponseEntity.ok("../img/"+multipartFile.getOriginalFilename());
